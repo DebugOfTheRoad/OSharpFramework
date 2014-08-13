@@ -15,6 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-文档", "5-文档", "{BB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODeer.Hosting.Web", "ODeer.Hosting.Web\ODeer.Hosting.Web.csproj", "{54E3EC82-5923-4EDA-84E1-6305D811B7D3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdminPlugin", "AdminPlugin", "{1D96D242-C1C4-46D6-A8CA-C1F0C5761174}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODeer.Plugin.Admin", "ODeer.Hosting.Web\Plugins\ODeer.Plugin.Admin\ODeer.Plugin.Admin.csproj", "{5D0D4488-691F-48CC-ABBA-534837DBEF22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODeer.Plugin", "ODeer.Plugin\ODeer.Plugin.csproj", "{06F764F1-881B-430E-A03F-4D4E62A09013}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,11 +31,22 @@ Global
 		{54E3EC82-5923-4EDA-84E1-6305D811B7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54E3EC82-5923-4EDA-84E1-6305D811B7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54E3EC82-5923-4EDA-84E1-6305D811B7D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D0D4488-691F-48CC-ABBA-534837DBEF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D0D4488-691F-48CC-ABBA-534837DBEF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D0D4488-691F-48CC-ABBA-534837DBEF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D0D4488-691F-48CC-ABBA-534837DBEF22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06F764F1-881B-430E-A03F-4D4E62A09013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F764F1-881B-430E-A03F-4D4E62A09013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06F764F1-881B-430E-A03F-4D4E62A09013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F764F1-881B-430E-A03F-4D4E62A09013}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{06F764F1-881B-430E-A03F-4D4E62A09013} = {77C40A27-5852-4848-893C-642CE64A5BCF}
 		{54E3EC82-5923-4EDA-84E1-6305D811B7D3} = {1C65611C-0C1C-471C-99BF-0A585DA0DDFE}
+		{1D96D242-C1C4-46D6-A8CA-C1F0C5761174} = {479DFEF2-8574-400D-AAB9-AD73A3DDB2A1}
+		{5D0D4488-691F-48CC-ABBA-534837DBEF22} = {1D96D242-C1C4-46D6-A8CA-C1F0C5761174}
 	EndGlobalSection
 EndGlobal
