@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" Name="Demo示例插件" SymbolicName="DemoPlugin" Version="1.0.0.0" InitializedState="Active">
+  <Activator Type="ODeer.Plugin.Demo.BundleActivator" Policy="Immediate" />
+  <Runtime>
+    <Assembly Path="ODeer.Plugin.Demo.dll" Share="false" MultipleVersions="false" />
+  </Runtime>
+  <Extension Point="UIShell.NavigationService">
+    <Node Name="示例插件" Location="后台管理.导航菜单.其他" Order="1" Icon="pic_126" ToolTip="示例插件" Value="/DemoPlugin/Home/Index" />
+  </Extension>
+</Bundle>

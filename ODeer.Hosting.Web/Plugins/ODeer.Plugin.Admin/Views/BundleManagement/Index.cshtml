@@ -1,0 +1,20 @@
+﻿@{
+    Layout = Url.BundleContent(BundleActivator.Bundle, "~/Views/Shared/_GridLayout.cshtml");
+    ViewBag.Title = "插件管理";
+    ViewBag.GridId = "bundles";
+    ViewBag.GridDataUrl = Url.Action("GetGridData", "BundleManagement");
+    ViewBag.ToolbarItem = string.Empty;
+}
+@section customScript{
+    <script type="text/javascript">
+        multiSort = true;
+        columns = [[
+            { field: "Name", title: "插件名称", width: 200, sortable: true, editor: { type: "validatebox", options: { required: true } } },
+            { field: "SymbolicName", title: "插件标识", width: 200, sortable: true, editor: { type: "validatebox", options: { required: true } } },
+            { field: "Version", title: "版本", width: 80, sortable: true, halign: true, editor: { type: "validatebox", options: { required: true } } },
+            { field: "State", title: "状态", width: 60, sortable: true, halign: true, align: true, editor: { type: "numberbox", options: { required: true } } },
+        ]];
+        enableFilterData = true;
+        filterData = [{ field: "State", type: "numberbox", op:["equal","notequal"] }];
+    </script>
+}

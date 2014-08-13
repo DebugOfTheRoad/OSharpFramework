@@ -1,0 +1,229 @@
+﻿@{
+    Layout = Url.BundleContent(BundleActivator.Bundle, "~/Views/Shared/_Layout.cshtml");
+    string toolbarItem = ViewBag.ToolbarItem ?? "add,edit,save,cancel,delete";
+}
+@section footer{
+    <script type="text/javascript" src="@Url.BundleContent(BundleActivator.Bundle, "/Scripts/plugins/datagrid-filter.js")"></script>
+    <script type="text/javascript">
+        var rownumbers = true, singleSelect = false, ctrlSelect = true, multiSort = false, pageSize = 30;
+        var grid, columns = [[]], filterData = [], enableFilterData = false, editIndex = undefined;
+
+        var startfunction = function() {
+        };
+        var endfunction = function() {
+        };
+
+        var addNewRow = function() {
+            if (!endEditing()) {
+                $.osharp.easyui.msg.tip("请先提交或取消正在编辑的行。");
+                return;
+            }
+            grid.datagrid("appendRow", {});
+            editIndex = grid.datagrid("getRows").length - 1;
+            grid.datagrid("selectRow", editIndex)
+                .datagrid("beginEdit", editIndex);
+        };
+
+        var beginEdit = function() {
+            var row = grid.datagrid("getSelected");
+            if (!row) {
+                $.osharp.easyui.msg.tip("请选择要编辑的行。");
+                return;
+            }
+            var index = grid.datagrid("getRowIndex", row);
+            beginEditRow(index);
+        };
+
+        var beginEditRow = function(index) {
+            if (endEditing()) {
+                grid.datagrid("selectRow", index)
+                    .datagrid("beginEdit", index);
+                editIndex = index;
+            } else {
+                grid.datagrid("unselectRow", index)
+                    .datagrid("selectRow", editIndex);
+            }
+        };
+
+        var cancelEdit = function() {
+            grid.datagrid("rejectChanges");
+            editIndex = undefined;
+        };
+
+        var saveChanges = function() {
+            if (!endEditing()) {
+                return;
+            }
+            var adds = grid.datagrid("getChanges", "inserted");
+            if (adds && adds.length > 0) {
+                submitAdds(adds);
+            }
+            var edits = grid.datagrid("getChanges", "updated");
+            if (edits && edits.length > 0) {
+                submitEdits(edits);
+            }
+        };
+
+        var deleteRows = function() {
+            var selectRows = grid.datagrid("getSelections");
+            if (selectRows.length == 0) {
+                $.osharp.easyui.msg.tip("请先选中要删除的行。");
+                return;
+            }
+            var ids = $.Enumerable.From(selectRows).Select(function(m) { return m.Id; }).ToArray();
+            $.osharp.easyui.msg.confirm("是否要删除所有选中的行？此操作是不可恢复的。", null, function() {
+                $.post("@ViewBag.DeleteUrl", { ids: JSON.stringify(ids) }, ajaxResultHandler);
+            });
+        };
+
+        function endEditing() {
+            if (editIndex == undefined) {
+                return true;
+            }
+            if (grid.datagrid("validateRow", editIndex)) {
+                grid.datagrid("endEdit", editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function submitAdds(objs) {
+            $.post("@ViewBag.AddUrl", { models: JSON.stringify(objs) }, ajaxResultHandler);
+        }
+
+        function submitEdits(objs) {
+            $.post("@ViewBag.EditUrl", { models: JSON.stringify(objs) }, ajaxResultHandler);
+        }
+
+        function ajaxResultHandler(data) {
+            if (data.Type == "Success") {
+                grid.datagrid("reload");
+            }
+            if (data.Type == "Error") {
+                $.osharp.easyui.msg.error(data.Content);
+            } else {
+                $.osharp.easyui.msg.tip(data.Content);
+            }
+        }
+
+        var toolbarData = [
+            @if (toolbarItem.Contains("add"))
+            {
+            @:{ text: "增加", iconCls: "icon-add", handler: addNewRow },
+            }
+            @if (toolbarItem.Contains("edit"))
+            {
+            <text>
+            { text: "编辑", iconCls: "icon-edit", handler: beginEdit },
+            "-",
+            </text>
+            }
+            @if (toolbarItem.Contains("save"))
+            {
+            @:{ text: "保存", iconCls: "icon-save", handler: saveChanges },
+            }
+            @if (toolbarItem.Contains("cancel"))
+            {
+            <text>
+            { text: "取消", iconCls: "icon-undo", handler: cancelEdit },
+            "-",
+            </text>
+            }
+            @if (toolbarItem.Contains("delete"))
+            {
+            @:{ text: "删除", iconCls: "icon-remove", handler: deleteRows },
+            }
+        ];
+    </script>
+    @RenderSection("customScript", false)
+    <script type="text/javascript">
+        $(function() {
+            startfunction();
+
+            grid = $("#grid-@ViewBag.GridId").datagrid({
+                title: "@ViewBag.Title",
+                fit: true,
+                columns: columns,
+                fitColumns: true,
+                url: "@ViewBag.GridDataUrl",
+                loadMsg: "正在加载数据，请稍候",
+                toolbar: toolbarData,
+                rownumbers: rownumbers,
+                singleSelect: singleSelect,
+                ctrlSelect: ctrlSelect,
+                multiSort: multiSort,
+                pagination: true,
+                pageSize: pageSize,
+                pageList: [10, 30, 50, 100, 200],
+                onBeforeLoad: beforeLoad,
+                loadFilter: loadFilter,
+                onLoadError: loadError,
+                onDblClickRow: beginEditRow
+            });
+            if (enableFilterData) {
+                grid.datagrid("enableFilter", filterData);
+            }
+
+            endfunction();
+        });
+
+        //param的部分属性与后台要求不符，重置属性并删除原有属性
+        function beforeLoad(param) {
+            if (param.page) {
+                param.pageIndex = param.page;
+                delete param.page;
+            }
+            if (param.rows) {
+                param.pageSize = param.rows;
+                delete param.rows;
+            }
+            if (param.sort) {
+                param.sortField = param.sort;
+                delete param.sort;
+            }
+            if (param.order) {
+                param.sortOrder = param.order;
+                delete param.order;
+            }
+            if (param.filterRules) {
+                if (param.filterRules != "[]") {
+                    param.where = getFilterGroup(param.filterRules);
+                }
+                delete param.filterRules;
+            }
+        }
+
+        function getFilterGroup(filterRules) {
+            var group = new $.osharp.filter.group();
+            var rules = eval(filterRules);
+            for (var i = 0; i < rules.length; i++) {
+                var rule = rules[i];
+                rule.op = rule.op == "beginwith" ? "startwith" : rule.op == "endwith" ? "endswith" : rule.op;
+                
+                group.Rules.push(new $.osharp.filter.rule(rule.field, rule.value, rule.op));
+            }
+            return JSON.stringify(group);
+        }
+
+        function loadFilter(data) {
+            if (data.Rows && data.Total) {
+                data.rows = data.Rows;
+                data.total = data.Total;
+                delete data.Rows;
+                delete data.Total;
+            }
+            return data;
+        }
+
+        function loadError() {
+            $.osharp.easyui.msg.error("远程数据载入失败，请重试或检查参数。");
+        }
+    </script>
+    @RenderSection("endScript", false)
+}
+@RenderBody()
+@RenderSection("headHtml", false)
+<div id="grid-@ViewBag.GridId"></div>
+@RenderSection("footHtml", false)

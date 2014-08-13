@@ -104,8 +104,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-icon.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\icon.png" />
+    <Content Include="Content\images\icons.png" />
+    <Content Include="Content\images\tools.png" />
+    <Content Include="Content\osharp-icons.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -139,11 +146,19 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery.linq-vsdoc.js" />
+    <Content Include="Scripts\jquery.linq.js" />
+    <Content Include="Scripts\jquery.linq.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\json2.min.js" />
+    <Content Include="Scripts\knockout-3.1.0.debug.js" />
+    <Content Include="Scripts\knockout-3.1.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\osharp.global.js" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -174,13 +189,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ODeer.Plugin\ODeer.Plugin.csproj">
       <Project>{06f764f1-881b-430e-a03f-4d4e62a09013}</Project>
       <Name>ODeer.Plugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ODeer.Utility\ODeer.Utility.csproj">
+      <Project>{344e1ea5-1d0e-4ffb-975b-d2206ed5bc6e}</Project>
+      <Name>ODeer.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ODeer.Web\ODeer.Web.csproj">
+      <Project>{c2a8f74f-8bed-42ee-b087-a1e7e1bc5e32}</Project>
+      <Name>ODeer.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

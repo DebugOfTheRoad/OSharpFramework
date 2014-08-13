@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "欢迎页";
+}
+<div>欢迎使用OSharp后台管理系统</div>
+@foreach (var node in BundleActivator.NavigationModel.NavigatioNodes)
+{
+    <p>@node.Name</p>
+}
+<hr/>
